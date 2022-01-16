@@ -1,18 +1,17 @@
 import "./App.css";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-
+import { useDispatch, useSelector } from "react-redux";
+import { getUsers } from "./Redux/actions";
 function App() {
-  const [listUsers, setListUsers] = useState([]);
+  const dispatch = useDispatch();
+  const users = useSelector((state) => state);
   useEffect(() => {
-    axios.get("https://jsonplaceholder.typicode.com/users").then((response) => {
-      setListUsers([...response.data]);
-    });
+    dispatch(getUsers());
   }, []);
- 
   return (
     <div className="App">
-      {listUsers.length >0 ? listUsers.map((elt)=><h1>{elt.email}</h1>) :'no data to display'}
+      {users.length > 0 ? users.map((elt ) => <h1 key={elt.id}>{elt.email}</h1>) : "loading"}
     </div>
   );
 }
